@@ -1,37 +1,13 @@
 (function(){
-  let mouseDown = false;
+  let isMouseDown = false;
   let prevTouchTagret = null;
   const audio = new Audio('scripts/pop.mp3');
   const audio1 = new Audio('scripts/pop.mp3');
   const audio2 = new Audio('scripts/pop.mp3');
-  document.body.onmousedown = function(e)
-  { 
-    mouseDown = true;
-    if(e.target.classList && e.target.classList.contains('pop-item')) {
-      //onLabelMouseover(e);
-    }
-  }
-    
-  document.body.onmouseup = function()
-  {
-    mouseDown = false;
-  }
-
-  document.body.ontouchstart = function()
-  {
-    mouseDown = true;
-    prevTouchTagret = null;
-  };
-
-  document.body.ontouchend = function()
-  {
-    mouseDown = false;
-    prevTouchTagret = null;
-  };
 
   function playSound() {
     if(!audio.paused){
-      if(!audio1.paused) {
+      if(!audio1.paused){
         audio2.play();
       } else {
         audio1.play();
@@ -41,12 +17,50 @@
     }
   }
 
-  function onCheckboxClick(e) {
-    if (e.target.checked) {
-      e.target.parentElement.classList.add('checked');
+  function isPopLabel(target) {
+    return target.classList && target.classList.contains('pop-item');
+  }
+
+  function onTouchstart() {
+    isMouseDown = true;
+    prevTouchTagret = null;
+  };
+
+  function onTouchend() {
+    isMouseDown = false;
+    prevTouchTagret = null;
+  };
+
+  function onMouseDown(e) {
+    isMouseDown = true;
+    if(isPopLabel(e.target)) {
+      onPopClick(e);
+    }
+  }
+
+  function onMouseUp(){
+    isMouseDown = false;
+  }
+
+  function onPopClick(e) {
+    let checkbox = e.target.querySelector('input');
+    if (!checkbox.checked) {
+      e.target.classList.add('checked');
       playSound();
     } else {
-      e.target.parentElement.classList.remove('checked');
+      e.target.classList.remove('checked');
+      playSound();
+    }
+  }
+
+  function toggleElementWithAction(target, checkbox) {
+    if(!checkbox.checked) {
+      checkbox.checked = true;
+      target.classList.add('checked');
+      playSound();
+    } else {
+      checkbox.checked = false;
+      target.classList.remove('checked');
       playSound();
     }
   }
@@ -54,40 +68,26 @@
   function onToucheMove(e) {
     let myLocation = e.changedTouches[0];
     let realTarget = document.elementFromPoint(myLocation.clientX, myLocation.clientY);
-    if(mouseDown && realTarget.classList && realTarget.classList.contains('pop-item')) {
+    if(isMouseDown && isPopLabel(realTarget)) {
       let checkbox = realTarget.querySelector('input');
       if(checkbox) {
         if(realTarget == prevTouchTagret) {
           return;
         }
         prevTouchTagret = realTarget;
-        if(!checkbox.checked) {
-          checkbox.checked = true;
-          realTarget.classList.add('checked');
-          playSound();
-        } else {
-          checkbox.checked = false;
-          realTarget.classList.remove('checked');
-          playSound();
-        }
+        toggleElementWithAction(realTarget, checkbox);
       }
     }
   }
 
   function onLabelMouseover(e) {
-    if(mouseDown && e.target.classList && e.target.classList.contains('pop-item')) {
-      let checkbox = e.target.querySelector('input');
-      if(checkbox) {
-        if(!checkbox.checked) {
-          checkbox.checked = true;
-          e.target.classList.add('checked');
-          playSound();
-        } else {
-          checkbox.checked = false;
-          e.target.classList.remove('checked');
-          playSound();
-        }
+    const target = e.target;
+    if(isMouseDown && isPopLabel(target)) {
+      let checkbox = target.querySelector('input');
+      if(!checkbox) {
+        return;
       }
+      toggleElementWithAction(target, checkbox);
     }
   }
 
@@ -101,12 +101,17 @@
   }
 
   let checkboxLists = document.querySelectorAll(".popit");
-  let reset = document.querySelector('#reset')
+  let reset = document.querySelector('#reset');
+  let body = document.querySelector("body");
 
   reset.addEventListener('click', resetAll);
+
   checkboxLists.forEach((checkboxList) => {
-    checkboxList.addEventListener('change', onCheckboxClick);
+    body.addEventListener('mousedown', onMouseDown);
+    body.addEventListener('mouseup', onMouseUp);
+    body.addEventListener('touchstart', onTouchstart);
+    body.addEventListener('touchend', onTouchend);
     checkboxList.addEventListener('mouseover', onLabelMouseover);
     checkboxList.addEventListener('touchmove', onToucheMove);
-  })
+  });
 })()
