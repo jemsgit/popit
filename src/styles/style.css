@@ -13,8 +13,8 @@
 }
 
 .popit-large {
-  width: 700px;
-  height: 500px;
+  width: 600px;
+  height: 600px;
   background: red;
 }
 
@@ -26,6 +26,7 @@
 
 .popit-small {
   width: 90%;
+  max-width: 400px;
   height: 400px;
   background: red;
 }
@@ -82,6 +83,10 @@
   background: #ff8400;
 }
 
+.pop-row.violet {
+  background: #9100ff;
+}
+
 .pop-row.orange .pop-item:before{
   border-color: #ffc200;
   background-image: radial-gradient(circle, rgb(255 208 37) 0%, rgb(255 226 23) 30%, rgb(224 156 3) 100%);
@@ -105,6 +110,11 @@
 .pop-row.red .pop-item:before{
   border-color:#ff5a5a;
   background-image: radial-gradient(circle, rgb(255 77 24) 0%, rgb(255 77 24) 30%, rgb(181 4 4) 100%);
+}
+
+.pop-row.violet .pop-item:before{
+  border-color: #c075f9;
+  background-image: radial-gradient(circle, #c075f9 0%, #c075f9 30%, rgb(70 0 162) 80%, black 100%);
 }
 
 .pop-row.blue {
