@@ -1,19 +1,43 @@
 (function(){
   let isMouseDown = false;
   let prevTouchTagret = null;
-  const audio = new Audio('scripts/pop.mp3');
-  const audio1 = new Audio('scripts/pop.mp3');
-  const audio2 = new Audio('scripts/pop.mp3');
+  const audioIn = new Audio('scripts/popin.mp3');
+  const audioIn1 = new Audio('scripts/popin.mp3');
+  const audioIn2 = new Audio('scripts/popin.mp3');
 
-  function playSound() {
-    if(!audio.paused){
-      if(!audio1.paused){
-        audio2.play();
+  const audioOut = new Audio('scripts/popout.mp3');
+  const audioOut1 = new Audio('scripts/popout.mp3');
+  const audioOut2 = new Audio('scripts/popout.mp3');
+
+  function playSound(isOut) {
+    if(isOut){
+      playSoundOut();
+    } else {
+      playSoundIn();
+    }
+  }
+
+  function playSoundOut() {
+    if(!audioOut.paused){
+      if(!audioOut1.paused){
+        audioOut2.play();
       } else {
-        audio1.play();
+        audioOut1.play();
       }
     } else {
-      audio.play();
+      audioOut.play();
+    }
+  }
+
+  function playSoundIn() {
+    if(!audioIn.paused){
+      if(!audioIn1.paused){
+        audioIn2.play();
+      } else {
+        audioIn1.play();
+      }
+    } else {
+      audioIn.play();
     }
   }
 
@@ -44,24 +68,26 @@
 
   function onPopClick(e) {
     let checkbox = e.target.querySelector('input');
-    if (!checkbox.checked) {
+    let isChecked = checkbox.checked;
+    if (!isChecked) {
       e.target.classList.add('checked');
-      playSound();
+      playSound(isChecked);
     } else {
       e.target.classList.remove('checked');
-      playSound();
+      playSound(isChecked);
     }
   }
 
   function toggleElementWithAction(target, checkbox) {
-    if(!checkbox.checked) {
+    let isChecked = checkbox.checked;
+    if(!isChecked) {
       checkbox.checked = true;
       target.classList.add('checked');
-      playSound();
+      playSound(isChecked);
     } else {
       checkbox.checked = false;
       target.classList.remove('checked');
-      playSound();
+      playSound(isChecked);
     }
   }
 
@@ -93,7 +119,7 @@
 
   function resetAll() {
     let checkboxes = document.querySelectorAll('input[type=checkbox]');
-    playSound();
+    playSound(true);
     checkboxes.forEach(item => {
       item.checked = false;
       item.parentElement.classList.remove('checked');
