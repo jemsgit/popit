@@ -1,4 +1,5 @@
 (function(){
+  let scores = 0;
   let isMouseDown = false;
   let prevTouchTagret = null;
   const audioIn = new Audio('scripts/popin.mp3');
@@ -8,6 +9,13 @@
   const audioOut = new Audio('scripts/popout.mp3');
   const audioOut1 = new Audio('scripts/popout.mp3');
   const audioOut2 = new Audio('scripts/popout.mp3');
+
+  let scoreEl = document.querySelector('#score-value');
+
+  function updateScore() {
+    scores++;
+    scoreEl.innerText = scores.toString();
+  }
 
   function playSound(isOut) {
     if(isOut){
@@ -76,6 +84,7 @@
       e.target.classList.remove('checked');
       playSound(isChecked);
     }
+    updateScore();
   }
 
   function toggleElementWithAction(target, checkbox) {
@@ -89,6 +98,7 @@
       target.classList.remove('checked');
       playSound(isChecked);
     }
+    updateScore();
   }
 
   function onToucheMove(e) {
@@ -140,4 +150,14 @@
     checkboxList.addEventListener('mouseover', onLabelMouseover);
     checkboxList.addEventListener('touchmove', onToucheMove);
   });
+
+  let donateContentEl = document.querySelector('.donate-content');
+
+  document.querySelector('.donate > span').addEventListener('click', (e) => {
+    if(donateContentEl.classList.contains('hidden')) {
+      donateContentEl.classList.remove('hidden');
+    } else {
+      donateContentEl.classList.add('hidden');
+    }
+  })
 })()

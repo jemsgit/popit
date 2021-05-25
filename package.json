@@ -12,5 +12,9 @@
   "license": "ISC",
   "dependencies": {
     "browser-sync": "^2.26.14"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-uglify": "^3.0.2"
   }
 }
