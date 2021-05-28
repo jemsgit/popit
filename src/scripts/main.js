@@ -142,11 +142,12 @@
 
   reset.addEventListener('click', resetAll);
 
+  body.addEventListener('mousedown', onMouseDown);
+  body.addEventListener('mouseup', onMouseUp);
+  body.addEventListener('touchstart', onTouchstart);
+  body.addEventListener('touchend', onTouchend);
+
   checkboxLists.forEach((checkboxList) => {
-    body.addEventListener('mousedown', onMouseDown);
-    body.addEventListener('mouseup', onMouseUp);
-    body.addEventListener('touchstart', onTouchstart);
-    body.addEventListener('touchend', onTouchend);
     checkboxList.addEventListener('mouseover', onLabelMouseover);
     checkboxList.addEventListener('touchmove', onToucheMove);
   });
@@ -154,10 +155,6 @@
   let donateContentEl = document.querySelector('.donate-content');
 
   document.querySelector('.donate > span').addEventListener('click', (e) => {
-    if(donateContentEl.classList.contains('hidden')) {
-      donateContentEl.classList.remove('hidden');
-    } else {
-      donateContentEl.classList.add('hidden');
-    }
+    donateContentEl.classList.toggle('hidden');
   })
 })()
